@@ -3,7 +3,6 @@ from telebot import types
 import sqlite3
 import os
 
-
 db = os.path.dirname(os.path.abspath(__file__)) + "/robofest.db"
 bot = telebot.TeleBot('5063766859:AAHMEx6EcmQEcOiCmVLKeR2TC6JieszJV4Q')
 user_id=''
