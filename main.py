@@ -42,10 +42,10 @@ def insert_varible_into_table(sqlphone, sqlname, sqlsurname, sqlage, sqlteam, sq
 @bot.message_handler(content_types=['text'])
 def start(message):
     if message.text == '/reg':
-        bot.send_message(message.from_user.id, "Как тебя зовут?")
+        bot.send_message(message.from_user.id, "Спасибо, Как тебя зовут?")
         bot.register_next_step_handler(message, get_name); #следующий шаг – функция get_name
     else:
-        bot.send_message(message.from_user.id, 'Напиши /reg')
+        bot.send_message(message.from_user.id, 'Это бот для регистрации на региональный этап всероссийской олипиады Робофест. Если хочешь зарегистрироваться - напиши /reg')
 
 def get_name(message): #получаем фамилию
     global name
@@ -100,10 +100,10 @@ def get_age(message):
 @bot.callback_query_handler(func=lambda call: True)
 def callback_worker(call):
     if call.data == "yes": #call.data это callback_data, которую мы указали при объявлении кнопки #код сохранения данных, или их обработки
-        bot.send_message(call.message.chat.id, 'Запомню : )')
+        bot.send_message(call.message.chat.id, 'Спасибо, увидимся на Робофесте : )')
         insert_varible_into_table(phone, name, surname, age, team, namination)
     elif call.data == "no":
-        bot.send_message(call.message.chat.id, 'Не запомню : )')
+        bot.send_message(call.message.chat.id, 'Если хочешь попробовать ещё раз напиши  /reg ')
 
 
 # print(db)

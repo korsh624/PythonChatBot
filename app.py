@@ -46,6 +46,12 @@ def allinfo():
     counter=len(data)
     return render_template('allinfo.html',data=data, counter=counter)
 
+@app.route("/about")
+def about():
+    data=readTable()
+    counter=len(data)
+    return render_template('about.html',data=data, counter=counter)
+
 if __name__=="__main__":
     app.run(debug=True)
 
