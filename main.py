@@ -45,7 +45,7 @@ def start(message):
         bot.send_message(message.from_user.id, "Спасибо, Как тебя зовут?")
         bot.register_next_step_handler(message, get_name); #следующий шаг – функция get_name
     else:
-        bot.send_message(message.from_user.id, 'Это бот для регистрации на региональный этап всероссийской олипиады Робофест. Если хочешь зарегистрироваться - напиши /reg')
+        bot.send_message(message.from_user.id, 'Тут ты можешь заказать себе доставку товара коптером, просто напиши /reg')
 
 def get_name(message): #получаем фамилию
     global name
@@ -62,7 +62,7 @@ def get_surname(message):
 def get_phone(message): #получаем телефон
     global phone
     phone = message.text
-    bot.send_message(message.from_user.id, 'Как называется твоя команда')
+    bot.send_message(message.from_user.id, 'Напиши номер заказа')
     bot.register_next_step_handler(message, get_team)
     user_id = str(message.chat.id)
     print(phone)
@@ -72,35 +72,30 @@ def get_phone(message): #получаем телефон
 def get_team(message): #Название команды
     global team
     team = message.text
-    bot.send_message(message.from_user.id, 'Какая у тебя номинация?')
+    bot.send_message(message.from_user.id, 'Введи адрес доставки?')
     bot.register_next_step_handler(message, get_namination)
 
 def get_namination(message): #в какой номинации участвует участник
     global namination
     namination = message.text
-    bot.send_message(message.from_user.id, 'Сколько тебе лет?')
+    bot.send_message(message.from_user.id, 'Прямо сейчас ты готов принять ?')
     bot.register_next_step_handler(message, get_age)
 
 def get_age(message):
     global age
     age=message.text
-    while age == 0: #проверяем что возраст изменился
-        try:
-             age = int(message.text) #проверяем, что возраст введен корректно
-        except Exception:
-            bot.send_message(message.from_user.id, 'Цифрами, пожалуйста')
     # bot.send_message(message.from_user.id, 'Тебе '+str(age)+' лет, тебя зовут '+name+' '+surname+'?'+'твоя команда '+team+'в наминации '+namination)
     keyboard = types.InlineKeyboardMarkup() #наша клавиатура
     key_yes = types.InlineKeyboardButton(text='Да', callback_data='yes') #кнопка «Да»
     keyboard.add(key_yes) #добавляем кнопку в клавиатуру
     key_no= types.InlineKeyboardButton(text='Нет', callback_data='no')
     keyboard.add(key_no)
-    question = 'Тебе '+str(age)+' лет, тебя зовут '+name+' '+surname+' ты участвуешь в наминации '+namination+' в команде '+team
+    question = ''+name+' '+surname+' ты готов принять заказ номер '+team
     bot.send_message(message.from_user.id, text=question, reply_markup=keyboard)
 @bot.callback_query_handler(func=lambda call: True)
 def callback_worker(call):
     if call.data == "yes": #call.data это callback_data, которую мы указали при объявлении кнопки #код сохранения данных, или их обработки
-        bot.send_message(call.message.chat.id, 'Спасибо, увидимся на Робофесте : )')
+        bot.send_message(call.message.chat.id, 'Спасибо, дрон уже оправился к тебе : )')
         insert_varible_into_table(phone, name, surname, age, team, namination)
     elif call.data == "no":
         bot.send_message(call.message.chat.id, 'Если хочешь попробовать ещё раз напиши  /reg ')
